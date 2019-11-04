@@ -1,0 +1,30 @@
+// Oct 2019
+// Trigger to create a follow up task when an opportunity event is created
+
+trigger OpportunityChangeTrigger on OpportunityChangeEvent (after insert) {
+	List<Task> tasks = new List<Task>();
+    System.debug('start');
+    // Iterate through each event message.
+    for (OpportunityChangeEvent event : Trigger.new){
+        // Get event header fields
+        EventBus.ChangeEventHeader header = event.ChangeEventHeader;
+        System.debug('Received change event for ' + header.entityname +
+                    ' for the ' + header.entityname + ' operation');
+        // Check if event is an update
+        if (header.changetype == 'UPDATE') {
+            System.debug('Update detected');
+            // Check if opportunity is won
+            if (event.IsWon==TRUE){
+                // Create follow up task
+                Task tk = new Task();
+                tk.Subject = 'Follow up on won opportunities: ' + header.recordIds;
+                tk.OwnerId = header.commituser;
+                tasks.add(tk);
+            }
+        } 
+    }
+    // Insert all tasks in bulk
+    if (tasks.size()>0){
+        insert tasks;
+    }
+}
