@@ -1,3 +1,3 @@
-# Salesforce VS Project
+# Salesforce
 
-This repository contains a Visual Studio Code project used for Salesforce development.
+This repository contains a colection of SalesForce code for various components
