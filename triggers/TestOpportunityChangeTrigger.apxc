@@ -1,0 +1,29 @@
+@isTest
+public class TestOpportunityChangeTrigger {
+    @isTest static void testCreateAndUpdateOpportunity() {
+        // Enable all Change Data Capture entities for notifications
+        Test.enableChangeDataCapture();
+        // Insert a new Opporthunity test record
+        insert new Opportunity(
+        	Name='Sell 100 Widgets',
+        	StageName='Prospecting',
+        	CloseDate=Date.today().addMonths(3));
+        // Call deliver to fire the trigger and deliver the test change state
+        Test.getEventBus().deliver();
+        
+        // UPDATE opportunity
+        Opportunity[] oppRecords = [SELECT StageName FROM Opportunity];
+        //There is only one test record, so get the first one
+        Opportunity opp = oppRecords[0];
+        System.debug('Retrieved opportunity record' + opp);
+        opp.StageName = 'Closed Won';
+        update opp;
+        // Call deliver to fire the trigger for the update opperation
+        Test.getEventBus().deliver();
+        // Check that the change event trigger created a task
+        Task[] taskList = [SELECT Id,Subject FROM Task];
+        System.assertEquals(1, taskList.size(),
+                           'The change event trigger did ' +
+                           'not create the epected task');       
+    }
+}
