@@ -1,0 +1,10 @@
+public class RandomContactFactory {
+    public static List<Contact> generateRandomContacts(String lName, Integer quantity){
+        List<Contact> cts = new List<Contact>();
+        
+        for (integer i=0;i<quantity;i++){
+            
+        }
+        return cts;
+    }
+}
