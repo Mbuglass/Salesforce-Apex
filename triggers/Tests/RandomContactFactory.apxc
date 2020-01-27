@@ -1,10 +1,11 @@
 public class RandomContactFactory {
-    public static List<Contact> generateRandomContacts(String lName, Integer quantity){
+    // Creates and returns list of generated contacts
+    public static List<Contact> generateRandomContacts(Integer quantity, String lName){
         List<Contact> cts = new List<Contact>();
-        
-        for (integer i=0;i<quantity;i++){
-            
-        }
-        return cts;
+        for (integer i=0;i<quantity;i++){ // For quantity
+            Contact ct = new Contact(firstName = 'Test'+i, lastName=lName); // Create new Contact
+            cts.add(ct); // Add Contact to list
+        } // End For
+        return cts; // Return list
     }
 }
